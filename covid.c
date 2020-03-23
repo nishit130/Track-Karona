@@ -88,44 +88,16 @@ struct data{
     char n_deaths[3];
 };
 struct data top[10];
-int main(int url, char **image){
-    //file download 
-    CURL *curl;
-    FILE *fp;
-    int result;
-    fp=fopen(image[2],"wb");
-    curl=curl_easy_init();
-    curl_easy_setopt(curl,CURLOPT_URL,image[1]);
-    curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
-    curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
-    result=curl_easy_perform(curl);
-    if(result==CURLE_OK){
-        printf("TOP 10 COUNTRIES : \n\n");
-    }
-    else{
-        printf("error %s \n",curl_easy_strerror(result));
-    }
-    fclose(fp);
-    curl_easy_cleanup(curl);
-    //file cleaning
-    clean();
-    //data extraction
+struct data ind;
+int top10(){
+     //data extraction
     FILE * fp1;
     fp1=fopen("data.html","rb");
     char a[500];
     fgets(a,500,fp1);
     // puts(a);
     int q=0;
-    // while(q!=EOF){
-    //     fgets(a,500,fp1);
-    //     q=fgetc(fp1);
-    //     // int w=0;
-    //     // while(a[w++]!='<');
-    //     puts(a);
-    //     if(a[18]=='<'&&a[19]=='t'&&a[20]=='b'&&a[21]=='o'&&a[22]=='d'&&a[23]=='y'&&a[24]=='>'){
-    //         break;
-    //     }
-    // }
+
     int w=0;
     while(w++<1084){
         fgets(a,500,fp1);
@@ -133,6 +105,7 @@ int main(int url, char **image){
     // printf("the final line is --> %s\n",a); //test
     int c=1;
     while(c<=10){
+        printf("--------------------------------------------------------------------------------\n");
         printf("%d\n",c);
         fgets(a,500,fp1); //for <tr>
         fgets(a,500,fp1); //for countryname
@@ -143,6 +116,7 @@ int main(int url, char **image){
             top[c].name[y++]=a[x++];
         }
         printf("country --> %s \n",top[c].name);
+        printf("--------------------------------------------------------------------------------\n");
 
         //for t_cases
         fgets(a,500,fp1);
@@ -199,8 +173,133 @@ int main(int url, char **image){
             fgets(a,500,fp1);
         }
         c++;
-        printf("\n");
+        printf("--------------------------------------------------------------------------------\n");
+        // printf("\n");
     }
     fclose(fp1);  
+    return 0;
+}
+int ind_data(){
+    //data extraction for india
+    FILE * fp1;
+    fp1=fopen("data.html","r+b");
+    char a[500];
+    fgets(a,500,fp1);
+    // puts(a);
+    int q=0;
+    //skipping to the line where india will be found
+    int w=0;
+    while(w++<1084){
+        fgets(a,500,fp1);
+    }
+    // printf("the final line is --> %s\n",a); //test
+    //11 lines per country
+    int p1=0;//pointer for india start
+    int fc='1';//pointer of the cursor initialized to a random value
+    while(fc++!=EOF){
+        fc=fgetc(fp1);
+        fseek(fp1,-2,SEEK_CUR);
+        fgets(a,500,fp1);//<tr>
+        fgets(a,500,fp1);//country name
+        int p=0;
+        while(a[p++]!='>');//<td>
+        //if theres no link for india
+            if(a[p]=='I'&&a[p+1]=='n'&&a[p+2]=='d'&&a[p+3]=='i'&&a[p+4]=='a'){
+                p1=p;
+                break;
+            }
+        while(a[p++]!='>');//a
+          // in case a link is added
+            if(a[p]=='I'&&a[p+1]=='n'&&a[p+2]=='d'&&a[p+3]=='i'&&a[p+4]=='a'){
+                p1=p;
+                break;
+            }
+    }
+    // printf("the final line is --> %s\n",a); //test
+    int xi=0;
+    while(a[p1]!='<'){
+        ind.name[xi++]=a[p1++];
+    }
+    printf("--------------------------------------------------------------------------------\n");
+    printf("%s \n",ind.name);
+    printf("--------------------------------------------------------------------------------\n");
+    //t_case in india
+    int xitc=0,yitc=0;
+    fgets(a,500,fp1);
+    while(a[xitc++]!='>');
+    while(a[xitc]!='<'){
+        ind.t_case[yitc++]=a[xitc++];
+    }
+    printf("total cases --> %s \n",ind.t_case);
+    //for n_case in india
+    int xinc=0,yinc=0;
+    fgets(a,500,fp1);
+    while(a[xinc++]!='>');
+    while(a[xinc]!='<'){
+        ind.n_case[yinc++]=a[xinc++];
+    }
+    printf("new cases --> %s \n",ind.n_case);
+    //for total deaths in india
+    int xitd=0,yitd=0;
+    fgets(a,500,fp1);
+    while(a[xitd++]!='>');
+    while(a[xitd]!='<'){
+        ind.t_deaths[yitd++]=a[xitd++];
+    }
+    printf("total deaths --> %s \n",ind.t_deaths);
+    //for n_deaths in india
+    int xind=0,yind=0;
+    fgets(a,500,fp1);
+    while(a[xind++]!='>');
+    while(a[xind]!='<'){
+        ind.n_deaths[yind++]=a[xind++];
+    }
+    printf("new deaths --> %s \n",ind.n_deaths);
+    printf("--------------------------------------------------------------------------------\n");
+    return 0;
+}
+int print_menu(){
+    int menu;
+    printf("WELCOME TO COVID19\n");
+    printf("--------------------------------------------------------------------------------\n");
+    printf("\t press : \n");
+    printf("1. GLOBAL STATUS\n2. INDIA'S STATUS\n3. QUIT\n");
+    scanf("%d ",&menu);
+    printf("--------------------------------------------------------------------------------\n");
+    return menu;
+}
+int main(int url, char **image){
+    //file download 
+    CURL *curl;
+    FILE *fp;
+    int result;
+    fp=fopen(image[2],"wb");
+    curl=curl_easy_init();
+    curl_easy_setopt(curl,CURLOPT_URL,image[1]);
+    curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
+    curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
+    result=curl_easy_perform(curl);
+
+    if(result==CURLE_OK){
+        printf("\n");
+    }
+    else{
+        printf("error %s \n",curl_easy_strerror(result));
+    }
+    fclose(fp);
+    curl_easy_cleanup(curl);
+    //file cleaning
+    clean();
+    // int menu;
+    // printf("WELCOME TO COVID19\n");
+    // printf("--------------------------------------------------------------------------------\n");
+    // printf("\t press : \n");
+    // printf("1. GLOBAL STATUS\n2. INDIA'S STATUS\n3. QUIT\n");
+    // scanf("%d ",&menu);
+    // printf("--------------------------------------------------------------------------------\n");
+    // // int x=print_menu();
+    // printf("%d\n",menu);
+    ind_data();
+    top10();
     return 0;
 }
