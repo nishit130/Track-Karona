@@ -97,11 +97,19 @@ int top10(){
     fgets(a,500,fp1);
     // puts(a);
     int q=0;
-
-    int w=0;
-    while(w++<1084){
-        fgets(a,500,fp1);
+    while(q!=EOF){
+        q=fgetc(fp1);
+        fseek(fp1,-1,SEEK_CUR); 
+        fgets(a,500,fp1);  
+        int w=0;
+        while(a[w++]!='<');
+        if(a[w]=='t'&&a[w+1]=='b'&&a[w+2]=='o'&&a[w+3]=='d'&&a[w+4]=='y'){
+            break;
+        }
     }
+    int w=0;
+    while(a[w++]!='<');
+    
     // printf("the final line is --> %s\n",a); //test
     int c=1;
     while(c<=10){
@@ -167,11 +175,21 @@ int top10(){
         }
         printf("new deaths --> %s \n",top[c].n_deaths);
 
-        //for skipping the next 6 lines whos data isnt needed
-        int ign=0;
-        while(ign++<4){
+        //for skipping the next few lines whos data isnt needed
+        // fgets(a,500,fp1);
+        int ignco=0;
+        while(ignco!=EOF){
+            ignco=fgetc(fp1);
+            fseek(fp1,-1,SEEK_CUR);
             fgets(a,500,fp1);
+            int ign=0;
+            while(a[ign++]!='<');
+            if(a[ign]=='/'&&a[ign+1]=='t'&&a[ign+2]=='r'){
+                break;
+            }
         }
+
+
         c++;
         printf("--------------------------------------------------------------------------------\n");
         // printf("\n");
@@ -268,14 +286,14 @@ int print_menu(){
     printf("--------------------------------------------------------------------------------\n");
     return menu;
 }
-int main(int url, char **image){
+int main(){
     //file download 
     CURL *curl;
     FILE *fp;
     int result;
-    fp=fopen(image[2],"wb");
+    fp=fopen("data.html","wb");
     curl=curl_easy_init();
-    curl_easy_setopt(curl,CURLOPT_URL,image[1]);
+    curl_easy_setopt(curl,CURLOPT_URL,"https://www.worldometers.info/coronavirus/");
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
     curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result=curl_easy_perform(curl);
@@ -301,5 +319,6 @@ int main(int url, char **image){
     // printf("%d\n",menu);
     ind_data();
     top10();
+    remove("data.html"); //to delete the file
     return 0;
 }
