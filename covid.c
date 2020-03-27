@@ -5,87 +5,12 @@
 #include<math.h>
 #include<string.h>
 #define BUFFER_SIZE 1000
-int  isEmpty(const char *str);
-void removeEmptyLines(FILE *srcFile, FILE *tempFile);
-void printFile(FILE *fptr);
-int clean(){
-    FILE *srcFile;
-    FILE *tempFile;
-    srcFile  = fopen("data.html", "r");
-    tempFile = fopen("remove-blanks.tmp", "w");
-    /* Exit if file not opened successfully */
-    if (srcFile == NULL || tempFile == NULL)
-    {
-        printf("Unable to open file.\n");
-        printf("Please check you have read/write previleges.\n");
-        exit(EXIT_FAILURE);
-    }
-    // printf("\nFile contents before removing all empty lines.\n\n");
-    // printFile(srcFile);
-    // Move src file pointer to beginning
-    rewind(srcFile);
-    // Remove empty lines from file.
-    removeEmptyLines(srcFile, tempFile);
-    /* Close all open files */
-    fclose(srcFile);
-    fclose(tempFile);
-    /* Delete src file and rename temp file as src */
-    remove("data.html");
-    rename("remove-blanks.tmp", "data.html");
-    // printf("\n\n\nFile contents after removing all empty line.\n\n");
-    // Open source file and print its contents
-    srcFile = fopen("data.html", "r");
-    // printFile(srcFile);
-    fclose(srcFile);
-    return 0;
-}
-/**
- * Print contents of a file.
- */
-void printFile(FILE *fptr)
-{
-    char ch;
-    while((ch = fgetc(fptr)) != EOF)
-        putchar(ch);
-}
-/**
- * Checks, whether a given string is empty or not.
- * A string is empty if it only contains white space
- * characters.
- * 
- * Returns 1 if given string is empty otherwise 0.
- */
-int isEmpty(const char *str)
-{
-    char ch;
-    do
-    {
-        ch = *(str++);
-        // Check non whitespace character
-        if(ch != ' ' && ch != '\t' && ch != '\n' && ch != '\r' && ch != '\0')
-            return 0;
-    } while (ch != '\0');
-    return 1;
-}
-/**
- * Function to remove empty lines from a file.
- */
-void removeEmptyLines(FILE *srcFile, FILE *tempFile)
-{
-    char buffer[BUFFER_SIZE];
-    while ((fgets(buffer, BUFFER_SIZE, srcFile)) != NULL)
-    {
-        /* If current line is not empty then write to temporary file */
-        if(!isEmpty(buffer))
-            fputs(buffer, tempFile);
-    }
-}
 struct data{
     char name[20];
-    char t_case[5];
-    char n_case[4];
-    char t_deaths[4];
-    char n_deaths[3];
+    char t_case[6];
+    char n_case[5];
+    char t_deaths[5];
+    char n_deaths[4];
 };
 struct data top[10];
 struct data ind;
@@ -94,27 +19,20 @@ int top10(){
     FILE * fp1;
     fp1=fopen("data.html","rb");
     char a[500];
-    fgets(a,500,fp1);
-    // puts(a);
-    int q=0;
-    while(q!=EOF){
-        q=fgetc(fp1);
-        fseek(fp1,-1,SEEK_CUR); 
-        fgets(a,500,fp1);  
-        int w=0;
-        while(a[w++]!='<');
-        if(a[w]=='t'&&a[w+1]=='b'&&a[w+2]=='o'&&a[w+3]=='d'&&a[w+4]=='y'){
+    // puts(a); //test
+    char tbody[50]="<tbody>";
+    while(fgets(a,500,fp1)!=NULL){
+        if(strstr(a,tbody)!=NULL){
             break;
         }
     }
-    int w=0;
-    while(a[w++]!='<');
-    
-    // printf("the final line is --> %s\n",a); //test
+    // printf("the final line is --> %s\n",a); //test for finding line containing <tbody>
+    printf("\n\nTOP 10 COUNTRIES : \n\n");
+    printf("|sr| country\t| total cases\t| new cases\t| total deaths\t| new deaths |\n");
     int c=1;
     while(c<=10){
         printf("--------------------------------------------------------------------------------\n");
-        printf("%d\n",c);
+        // printf("%d\n",c);
         fgets(a,500,fp1); //for <tr>
         fgets(a,500,fp1); //for countryname
         int x=0,y=0;
@@ -123,8 +41,8 @@ int top10(){
         while(a[x]!='<'){
             top[c].name[y++]=a[x++];
         }
-        printf("country --> %s \n",top[c].name);
-        printf("--------------------------------------------------------------------------------\n");
+        printf("|%d | %s \t",(c),top[c].name);//test to print the country's name
+        // printf("--------------------------------------------------------------------------------\n");
 
         //for t_cases
         fgets(a,500,fp1);
@@ -136,7 +54,7 @@ int top10(){
                 }
             top[c].t_case[ytc++]=a[xtc++];
         }
-        printf("total cases --> %s \n",top[c].t_case);
+        printf("| %s \t",top[c].t_case);// test to print t_case
 
         //for n_case
         fgets(a,500,fp1);
@@ -148,7 +66,7 @@ int top10(){
             }
             top[c].n_case[ync++]=a[xnc++];
         }
-        printf("new cases --> %s \n",top[c].n_case);
+        printf("| %s \t",top[c].n_case);//test to print n_case
 
         //for t_deaths
         fgets(a,500,fp1);
@@ -160,9 +78,8 @@ int top10(){
             }
             top[c].t_deaths[ytd++]=a[xtd++];
         }
-        printf("total deaths --> %s \n",top[c].t_deaths);
+        printf("| %s \t",top[c].t_deaths);//test to print t_deaths
 
-        fgets(a,500,fp1); // for an extra blank line
         //for n_deaths
         fgets(a,500,fp1);
         int xnd=0,ynd=0;
@@ -173,23 +90,16 @@ int top10(){
             }
             top[c].n_deaths[ynd++]=a[xnd++];
         }
-        printf("new deaths --> %s \n",top[c].n_deaths);
+        printf("| %s       |\n",top[c].n_deaths);//test to print n_deaths
 
         //for skipping the next few lines whos data isnt needed
         // fgets(a,500,fp1);
-        int ignco=0;
-        while(ignco!=EOF){
-            ignco=fgetc(fp1);
-            fseek(fp1,-1,SEEK_CUR);
-            fgets(a,500,fp1);
-            int ign=0;
-            while(a[ign++]!='<');
-            if(a[ign]=='/'&&a[ign+1]=='t'&&a[ign+2]=='r'){
+        char tr[50]="</tr>";
+        while(fgets(a,500,fp1)!=NULL){
+            if(strstr(a,tr)!=NULL){
                 break;
             }
         }
-
-
         c++;
         printf("--------------------------------------------------------------------------------\n");
         // printf("\n");
@@ -211,7 +121,6 @@ int ind_data(){
         fgets(a,500,fp1);
     }
     // printf("the final line is --> %s\n",a); //test
-    //11 lines per country
     int p1=0;//pointer for india start
     int fc='1';//pointer of the cursor initialized to a random value
     while(fc++!=EOF){
@@ -278,7 +187,7 @@ int ind_data(){
 }
 int print_menu(){
     int menu;
-    printf("WELCOME TO COVID19\n");
+    printf("\n\nWELCOME TO TRACK-KARUNA\n");
     printf("--------------------------------------------------------------------------------\n");
     printf("\t press : \n");
     printf("1. GLOBAL STATUS\n2. INDIA'S STATUS\n3. QUIT\n");
@@ -306,19 +215,16 @@ int main(){
     }
     fclose(fp);
     curl_easy_cleanup(curl);
-    //file cleaning
-    clean();
-    // int menu;
-    // printf("WELCOME TO COVID19\n");
-    // printf("--------------------------------------------------------------------------------\n");
-    // printf("\t press : \n");
-    // printf("1. GLOBAL STATUS\n2. INDIA'S STATUS\n3. QUIT\n");
-    // scanf("%d ",&menu);
-    // printf("--------------------------------------------------------------------------------\n");
-    // // int x=print_menu();
-    // printf("%d\n",menu);
-    ind_data();
-    top10();
+    int menu;
+    while(menu!=3){
+        menu=print_menu();
+    switch(menu){
+        case 1: top10();
+            break;
+        case 2: ind_data();
+            break;
+    }
+    }
     remove("data.html"); //to delete the file
     return 0;
 }
