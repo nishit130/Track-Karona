@@ -179,14 +179,14 @@ int print_menu(){
     printf("--------------------------------------------------------------------------------\n");
     printf("\t press : \n");
     printf("1. GLOBAL STATUS\n2. INDIA'S STATUS\n3. SYMPTOMS\n4. PRECAUTIONS\n5. QUIT\n");
-    scanf("%d ",&menu);
+    scanf("%d",&menu);
     printf("--------------------------------------------------------------------------------\n");
     return menu;
 }
 void print_sym(){
     printf("\n\n \t SYMPTOMS : \n\n");
     printf("--------------------------------------------------------------------------------\n");
-    printf("  People may be sick with the virus for 1 to 14 days before developing symptoms. The most common symptoms of coronavirus disease (COVID-19) are fever, tiredness, and dry cough. Most people (about 80%) recover from the disease without needing special treatment.\n");
+    printf("  People may be sick with the virus for 1 to 14 days before developing symptoms. The most common symptoms of coronavirus disease (COVID-19) are fever, tiredness, and dry cough. Most people (about 80%%) recover from the disease without needing special treatment.\n");
     printf("  More rarely, the disease can be serious and even fatal. Older people, and people with other medical conditions (such as asthma, diabetes, or heart disease), may be more vulnerable to becoming severely ill.\n");
     printf("  People may experince:\n");
     printf("    1. Cough\n");
@@ -232,23 +232,24 @@ int main(){
     }
     fclose(fp);
     curl_easy_cleanup(curl);
-    int menu;
-    while(menu!=5){
-        menu=print_menu();
-    switch(menu){
-        case 1: top10();
-            break;
-        case 2: ind_data();
-            break;
-        case 3: print_sym();
-            break;
-        case 4: print_info();
-            break;   
-    }
+    //file download
+    int option=0;
+    while(option!=5){
+        option = print_menu();
+	if(option==1)
+		top10();
+        else if(option==2)
+		ind_data();
+        else if(option==3)
+		print_sym();
+        else if(option==4)
+                print_info();
+        else
+                break;
     }
     printf("--------------------------------------------------------------------------------\n");
     printf("THANK YOU\n");
     printf("--------------------------------------------------------------------------------\n");
-    remove("data.html"); //to delete the file
+    //remove("data.html"); //to delete the file
     return 0;
 }
