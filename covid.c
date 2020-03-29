@@ -175,10 +175,18 @@ int ind_data(){
 }
 int print_menu(){
     int menu;
-    printf("\n\nWELCOME TO TRACK-KARONA\n");
-    printf("--------------------------------------------------------------------------------\n");
+    printf("\n--------------------------------------------------------------------------------\n");
     printf("\t press : \n");
     printf("1. GLOBAL STATUS\n2. INDIA'S STATUS\n3. SYMPTOMS\n4. PRECAUTIONS\n5. QUIT\n");
+    scanf("%d",&menu);
+    printf("--------------------------------------------------------------------------------\n");
+    return menu;
+}
+int print_menu_off(){
+    int menu;
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\t press : \n");
+    printf("1. SYMPTOMS\n2. PRECAUTIONS\n3. RETRY \n4. QUIT\n");
     scanf("%d",&menu);
     printf("--------------------------------------------------------------------------------\n");
     return menu;
@@ -212,44 +220,59 @@ void print_info(){
     printf("\t National and local authorities will have up to date information on whether COVID-19 is spreading in your area. They are the best placed to advise on what people in your area should be doing to protect themselves.\n\n");
     printf("--------------------------------------------------------------------------------\n");
 }
+
 int main(){
     //file download 
+    
     CURL *curl;
     FILE *fp;
     int result;
+    retry:
     fp=fopen("data.html","wb");
     curl=curl_easy_init();
     curl_easy_setopt(curl,CURLOPT_URL,"https://www.worldometers.info/coronavirus/");
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
     curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
     result=curl_easy_perform(curl);
-
+    printf("\n\nWELCOME TO TRACK-KARONA\n");
     if(result==CURLE_OK){
         printf("\n");
+        int option=0;
+        while(option!=5){
+            option = print_menu();
+	        if(option==1)
+		        top10();
+            else if(option==2)
+		        ind_data();
+            else if(option==3)
+		        print_sym();
+            else if(option==4)
+                print_info();
+            else
+                break;
+    }
     }
     else{
-        printf("error %s \n Check your internet connection\nOptins 1 & 2 unavailable\n",curl_easy_strerror(result));
+        printf("error %s \n Check your internet connection\n\n\tOFFLINE MODE \n",curl_easy_strerror(result));
+        int option=0;
+        while(option!=4){
+            option = print_menu_off();
+	        if(option==1)
+		        print_sym();
+            else if(option==2)
+		        print_info();
+            else if (option==3)
+                goto retry;   
+            else
+                break;
+    }
     }
     fclose(fp);
     curl_easy_cleanup(curl);
-    //file download
-    int option=0;
-    while(option!=5){
-        option = print_menu();
-	if(option==1)
-		top10();
-        else if(option==2)
-		ind_data();
-        else if(option==3)
-		print_sym();
-        else if(option==4)
-                print_info();
-        else
-                break;
-    }
+    //file download complete
     printf("--------------------------------------------------------------------------------\n");
     printf("THANK YOU\n");
     printf("--------------------------------------------------------------------------------\n");
-    //remove("data.html"); //to delete the file
+    remove("data.html"); //to delete the file
     return 0;
 }
