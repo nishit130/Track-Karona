@@ -1,4 +1,4 @@
-#include<curl/curl.h>
+                                                                                                          #include<curl/curl.h>
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
@@ -30,7 +30,7 @@ int top10(){
     printf("\n\nTOP 10 COUNTRIES : \n\n");
     printf("|sr|\tcountry\t\t| total cases | new cases | total deaths | new deaths |\n");
     int c=1;
-    while(c<=10){
+    while(c<=11){
         // printf("--------------------------------------------------------------------------------\n");
         // printf("%d\n",c);
         fgets(a,500,fp1); //for <tr>
@@ -41,7 +41,8 @@ int top10(){
         while(a[x]!='<'){
             top[c].name[y++]=a[x++];
         }
-        printf(" %2d   %-20s",(c),top[c].name);//test to print the country's name
+	if(c!=1)
+        	printf(" %2d   %-20s",(c-1),top[c].name);//test to print the country's name
         // printf("--------------------------------------------------------------------------------\n");
 
         //for t_cases
@@ -54,7 +55,8 @@ int top10(){
                 }
             top[c].t_case[ytc++]=a[xtc++];
         }
-        printf("%-13s ",top[c].t_case);// test to print t_case
+	if(c!=1)
+        	printf("%-13s ",top[c].t_case);// test to print t_case
 
         //for n_case
         fgets(a,500,fp1);
@@ -66,7 +68,8 @@ int top10(){
             }
             top[c].n_case[ync++]=a[xnc++];
         }
-        printf("  %-11s ",top[c].n_case);//test to print n_case
+	if(c!=1)
+	        printf("  %-11s ",top[c].n_case);//test to print n_case
 
         //for t_deaths
         fgets(a,500,fp1);
@@ -78,7 +81,8 @@ int top10(){
             }
             top[c].t_deaths[ytd++]=a[xtd++];
         }
-        printf("  %-14s \t",top[c].t_deaths);//test to print t_deaths
+	if(c!=1)
+	        printf("  %-14s \t",top[c].t_deaths);//test to print t_deaths
 
         //for n_deaths
         fgets(a,500,fp1);
@@ -90,7 +94,8 @@ int top10(){
             }
             top[c].n_deaths[ynd++]=a[xnd++];
         }
-        printf("  %-12s\n",top[c].n_deaths);//test to print n_deaths
+	if(c!=1)
+        	printf("  %-12s\n",top[c].n_deaths);//test to print n_deaths
 
         //for skipping the next few lines whos data isnt needed
         // fgets(a,500,fp1);
