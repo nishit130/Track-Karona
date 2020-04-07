@@ -15,8 +15,9 @@
   • <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a>
 </p>
+<img src="img/screenshot1.png" width="100%">
+<img src="img/screenshot2.png" width="100%">
 
-![screenshot]()
 ## Key Features
 
 * ### Live updates
@@ -47,6 +48,7 @@ $ cd Track-Karona
 $ sudo bash install.sh
 
 # Run the app
+$ chmod +x run.sh
 $ ./run.sh
 ```
 
