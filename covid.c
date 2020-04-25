@@ -20,17 +20,18 @@ int top10(){
     fp1=fopen("data.html","rb");
     char a[500];
     // puts(a); //test
-    char tbody[50]="<tbody>";
+    char tbody[505]="<td style=\"display:none\" data-continent=\"all\">All</td>";
     while(fgets(a,500,fp1)!=NULL){
         if(strstr(a,tbody)!=NULL){
             break;
         }
     }
-    // printf("the final line is --> %s\n",a); //test for finding line containing <tbody>
+    printf("the final line is --> %s\n",a); //test for finding line containing <tbody>
     printf("\n\nTOP 10 COUNTRIES : \n\n");
     printf("|sr|\tcountry\t\t| total cases | new cases | total deaths | new deaths |\n");
     int c=1;
-    while(c<=11){
+    fgets(a,500,fp1);
+    while(c<=10){
         // printf("--------------------------------------------------------------------------------\n");
         // printf("%d\n",c);
         fgets(a,500,fp1); //for <tr>
@@ -41,8 +42,8 @@ int top10(){
         while(a[x]!='<'){
             top[c].name[y++]=a[x++];
         }
-	if(c!=1)
-        	printf(" %2d   %-20s",(c-1),top[c].name);//test to print the country's name
+	if(c!=0)
+        	printf(" %2d   %-20s",(c),top[c].name);//test to print the country's name
         // printf("--------------------------------------------------------------------------------\n");
 
         //for t_cases
@@ -55,7 +56,7 @@ int top10(){
                 }
             top[c].t_case[ytc++]=a[xtc++];
         }
-	if(c!=1)
+	if(c!=0)
         	printf("%-13s ",top[c].t_case);// test to print t_case
 
         //for n_case
@@ -68,7 +69,7 @@ int top10(){
             }
             top[c].n_case[ync++]=a[xnc++];
         }
-	if(c!=1)
+	if(c!=0)
 	        printf("  %-11s ",top[c].n_case);//test to print n_case
 
         //for t_deaths
@@ -81,7 +82,7 @@ int top10(){
             }
             top[c].t_deaths[ytd++]=a[xtd++];
         }
-	if(c!=1)
+	if(c!=0)
 	        printf("  %-14s \t",top[c].t_deaths);//test to print t_deaths
 
         //for n_deaths
@@ -94,7 +95,7 @@ int top10(){
             }
             top[c].n_deaths[ynd++]=a[xnd++];
         }
-	if(c!=1)
+	if(c!=0)
         	printf("  %-12s\n",top[c].n_deaths);//test to print n_deaths
 
         //for skipping the next few lines whos data isnt needed
@@ -278,6 +279,6 @@ int main(){
     printf("--------------------------------------------------------------------------------\n");
     printf("THANK YOU\n");
     printf("--------------------------------------------------------------------------------\n");
-    remove("data.html"); //to delete the file
+    // remove("data.html"); //to delete the file
     return 0;
 }
