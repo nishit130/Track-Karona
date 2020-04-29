@@ -1,4 +1,4 @@
-                                                                                                          #include<curl/curl.h>
+#include<curl/curl.h>
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
@@ -26,7 +26,7 @@ int top10(){
             break;
         }
     }
-    printf("the final line is --> %s\n",a); //test for finding line containing <tbody>
+    // printf("the final line is --> %s\n",a); //test for finding line containing <tbody>
     printf("\n\nTOP 10 COUNTRIES : \n\n");
     printf("|sr|\tcountry\t\t| total cases | new cases | total deaths | new deaths |\n");
     int c=1;
@@ -279,6 +279,6 @@ int main(){
     printf("--------------------------------------------------------------------------------\n");
     printf("THANK YOU\n");
     printf("--------------------------------------------------------------------------------\n");
-    // remove("data.html"); //to delete the file
+    remove("data.html"); //to delete the file
     return 0;
 }
