@@ -9,6 +9,8 @@
 <p align="center">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square"
          alt="PR">
+    <img href="http://hits.dwyl.com/nis130/Track-Karona" src="http://hits.dwyl.com/nis130/Track-Karona.svg"
+         alt="hits">
 </p>
 
 <p align="center">
@@ -17,6 +19,8 @@
 </p>
 <img src="img/screenshot1.png" width="100%">
 <img src="img/screenshot2.png" width="100%">
+
+
 
 ## Key Features
 
@@ -56,7 +60,7 @@ $ ./run.sh
 
 This Program  uses the data  from following:
 
-- [Wordometers](https://www.worldometers.info/coronavirus/)
+- [covid19api](https://covid19api.com/)
 
 ### Contributors
 
