@@ -1,4 +1,4 @@
-if gcc covid.c -lcurl;
+if gcc covid.c -ljansson -lcurl;
 then
 	echo compiled sucesfully!
 	echo running...
