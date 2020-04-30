@@ -143,18 +143,18 @@ int main()
 	json_t *root;
 	json_error_t error;
 	root = json_load_file("data.json",0,&error);
-	json_t *data, *sha, *commit, *message, *country_array,*country,*country_name;
+	json_t  *country_array,*country,*country_name;
 	json_t *total_confirmed,*new_confirmed, *total_deaths, *new_deaths, *total_recovered,*new_recovered;
 	country_array = json_object_get(root,"Countries");
 	for(int i=0;i< json_array_size(country_array);i++)
 	{
 		country = json_array_get(country_array,i);
-		if(!json_is_object(country))
-		{
-		    fprintf(stderr, "error: commit data %d is not an object\n", (int)(i + 1));
-		    json_decref(root);
-		    return 1;
-        	}
+		// if(!json_is_object(country))
+		// {
+		//     fprintf(stderr, "error: commit data %d is not an object\n", (int)(i + 1));
+		//     json_decref(root);
+		//     return 1;
+        // 	}
 		country_name = json_object_get(country,"Country");
 		total_confirmed = json_object_get(country,"TotalConfirmed");
 		data_country[i].total_confirmed = json_integer_value(total_confirmed);
