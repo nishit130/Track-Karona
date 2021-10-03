@@ -9,8 +9,6 @@
 <p align="center">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square"
          alt="PR">
-    <img href="http://hits.dwyl.com/nis130/Track-Karona" src="http://hits.dwyl.com/nis130/Track-Karona.svg"
-         alt="hits">
 </p>
 
 <p align="center">
