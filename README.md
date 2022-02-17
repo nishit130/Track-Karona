@@ -64,7 +64,7 @@ This Program  uses the data  from following:
 
 - [@nis130](https://github.com/nis130)
 - [@alisolanki](https://github.com/alisolanki)
-- [@manan001022j](https://github.com/manan001022j)
+- [@mrpandya](https://github.com/mrpandya)
 ---
 ## Aim
 This project was part of our `FY PIC (programming in c)` mini project submission.
