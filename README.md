@@ -66,5 +66,5 @@ This Program  uses the data  from following:
 - [@alisolanki](https://github.com/alisolanki)
 - [@mrpandya](https://github.com/mrpandya)
 ---
-## Aim
+## Node
 This project was part of our `FY PIC (programming in c)` mini project submission.
